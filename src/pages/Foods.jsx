@@ -5,17 +5,44 @@ export default function Foods({ setPage, cart, setCart }) {
     { name: "Grilled Chicken", price: 1200, image: "https://images.pexels.com/photos/410648/pexels-photo-410648.jpeg" },
     { name: "Beef Steak", price: 1500, image: "https://images.pexels.com/photos/675951/pexels-photo-675951.jpeg" },
     { name: "Pasta Carbonara", price: 900, image: "https://images.pexels.com/photos/1437267/pexels-photo-1437267.jpeg" },
-    { name: "Seafood Platter", price: 1800, image: "https://images.pexels.com/photos/2232/seafood-dish-food-meal.jpg" },
+     {
+    name: "Seafood",
+    price: 800, 
+    image: "/images/side-view-fried-shrimps-sauce-with-tomatoes-herbs.jpg"
+  },
     { name: "Vegan Salad", price: 700, image: "https://images.pexels.com/photos/1640777/pexels-photo-1640777.jpeg" },
   ];
 
-  const drinks = [
-    { name: "Mojito", price: 500, image: "https://images.pexels.com/photos/594590/pexels-photo-594590.jpeg" },
-    { name: "Cappuccino", price: 350, image: "https://images.pexels.com/photos/302899/pexels-photo-302899.jpeg" },
-    { name: "Fresh Juice", price: 300, image: "https://images.pexels.com/photos/775031/pexels-photo-775031.jpeg" },
-    { name: "Cocktail", price: 600, image: "https://images.pexels.com/photos/682544/pexels-photo-682544.jpeg" },
-    { name: "Tea", price: 200, image: "https://images.pexels.com/photos/1051746/pexels-photo-1051746.jpeg" },
-  ];
+const drinks = [
+    {
+    name: "Mojito",
+    price: 500,
+    image: "/images/kiwi-alcohol-cocktail-with-fruit-slices-green-pipe.jpg"
+  },
+  { 
+    name: "Cappuccino", 
+    price: 350, 
+    image: "https://images.pexels.com/photos/302899/pexels-photo-302899.jpeg" 
+  },
+  { 
+    name: "Fresh Juice", 
+    price: 300, 
+    image: "https://images.pexels.com/photos/775031/pexels-photo-775031.jpeg" 
+  },
+   { 
+    name: "Red Cocktail", 
+    price: 600, 
+    image: "/images/glass-red-alcohol-cocktail-with-lime-slice-cherry.jpg" 
+  }
+,
+  { 
+    name: "coffee", 
+    price: 200, 
+    image: "/images/cup-coffee-shot-tequilla.jpg"  
+  }
+];
+
+  
 
   const [toast, setToast] = useState("");
 
