@@ -8,12 +8,17 @@ export default function App() {
 
   const handleRegister = (e) => {
     e.preventDefault();
-    const { name, gender, age, email, password } = e.target;
-    if(!name.value || !gender.value || !age.value || !email.value || !password.value){
+    const form = e.target.elements;
+    const name = form.name.value;
+    const email = form.email.value;
+    const password = form.password.value;
+
+    if(!name || !email || !password){
       alert('Fill all fields');
       return;
     }
-    const userObj = { name: name.value, gender: gender.value, age: age.value, email: email.value, password: password.value };
+
+    const userObj = { name, email, password };
     localStorage.setItem('faithResortUser', JSON.stringify(userObj));
     alert('Registered! Please login.');
     setPage('login');
@@ -21,9 +26,12 @@ export default function App() {
 
   const handleLogin = (e) => {
     e.preventDefault();
-    const { email, password } = e.target;
+    const form = e.target.elements;
+    const email = form.email.value;
+    const password = form.password.value;
+
     const storedUser = JSON.parse(localStorage.getItem('faithResortUser'));
-    if(storedUser && storedUser.email === email.value && storedUser.password === password.value){
+    if(storedUser && storedUser.email === email && storedUser.password === password){
       setUser(storedUser);
       setPage('dashboard');
     } else {
@@ -44,13 +52,6 @@ export default function App() {
           <h2>Register</h2>
           <form onSubmit={handleRegister}>
             <input name="name" placeholder="Full Name" />
-            <select name="gender">
-              <option value="">Select Gender</option>
-              <option>Male</option>
-              <option>Female</option>
-              <option>Other</option>
-            </select>
-            <input name="age" type="number" placeholder="Age" />
             <input name="email" type="email" placeholder="Email" />
             <input name="password" type="password" placeholder="Password" />
             <button type="submit">Register</button>
@@ -98,3 +99,4 @@ export default function App() {
 
   return null;
 }
+
