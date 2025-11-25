@@ -1,6 +1,5 @@
 import axios from "axios";
 
-
 const API_BASE = "http://localhost:5000/api";
 
 const api = axios.create({
@@ -19,20 +18,16 @@ api.interceptors.request.use((config) => {
   return config;
 });
 
+// Auth
+export const registerUser = (data) => api.post("/register", data);
+export const loginUser = (data) => api.post("/login", data);
 
-export const registerUser = (data) => api.post("/auth/register", data);
-export const loginUser = (data) => api.post("/auth/login", data);
+// Fetch resources
+export const fetchRooms = () => api.get("/rooms");
+export const fetchConference = () => api.get("/conference");
+export const fetchServices = () => api.get("/services");
 
-
-export const getRooms = () => api.get("/rooms");
-
-
-export const getConferenceHalls = () => api.get("/conference");
-
-
-export const getServices = () => api.get("/services");
-
-
+// Bookings
 export const createBooking = (data) => api.post("/bookings", data);
 export const getUserBookings = (userId) => api.get(`/bookings/${userId}`);
 

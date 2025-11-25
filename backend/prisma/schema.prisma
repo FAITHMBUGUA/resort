@@ -1,5 +1,5 @@
 datasource db {
-  provider = "postgresql"
+  provider = "sqlite"
   url      = env("DATABASE_URL")
 }
 
@@ -8,43 +8,33 @@ generator client {
 }
 
 model User {
-  id       Int      @id @default(autoincrement())
+  id       Int    @id @default(autoincrement())
   name     String
-  email    String   @unique
+  email    String @unique
   password String
-  createdAt DateTime @default(now())
-}
-model Booking {
-  id         Int       @id @default(autoincrement())
-  user       User      @relation(fields: [userId], references: [id])
-  userId     Int
-  hallName   String
-  roomName   String?
-  date       DateTime
-  startHour  Int
-  endHour    Int
-  createdAt  DateTime  @default(now())
-}
-model Room {
-  id        Int     @id @default(autoincrement())
-  name      String
-  type      String   // e.g., VIP, Suite, Master
-  capacity  Int
-  price     Int
-  image     String
-}
-model ConferenceHall {
-  id        Int    @id @default(autoincrement())
-  name      String
-  capacity  Int
-  price     Int
-  image     String
-}
-model Service {
-  id       Int     @id @default(autoincrement())
-  name     String
-  price    Int
-  category String  // e.g., Drink, Food, Spa
-  image    String?
 }
 
+model Room {
+  id   Int    @id @default(autoincrement())
+  name String
+}
+
+model ConferenceHall {
+  id   Int    @id @default(autoincrement())
+  name String
+}
+
+model OtherService {
+  id   Int    @id @default(autoincrement())
+  name String
+}
+
+model Booking {
+  id        Int    @id @default(autoincrement())
+  userId    Int
+  hallName  String?
+  roomName  String?
+  date      DateTime
+  startHour String
+  endHour   String
+}

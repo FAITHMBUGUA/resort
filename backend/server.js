@@ -1,23 +1,22 @@
 import express from "express";
 import cors from "cors";
 import bodyParser from "body-parser";
-import { PrismaClient } from "@prisma/client";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import dotenv from "dotenv";
+import { PrismaClient } from "@prisma/client";
 
 dotenv.config();
+
 const app = express();
-const PORT = 5000;
 const prisma = new PrismaClient();
+const PORT = process.env.PORT || 5000;
 const JWT_SECRET = process.env.JWT_SECRET || "your_secret_key";
 
 app.use(cors());
 app.use(bodyParser.json());
 
-
-
-
+// REGISTER
 app.post("/api/register", async (req, res) => {
   const { name, email, password } = req.body;
 
@@ -36,7 +35,7 @@ app.post("/api/register", async (req, res) => {
   }
 });
 
-
+// LOGIN
 app.post("/api/login", async (req, res) => {
   const { email, password } = req.body;
 
@@ -54,24 +53,25 @@ app.post("/api/login", async (req, res) => {
   }
 });
 
-
+// ROOMS
 app.get("/api/rooms", async (req, res) => {
   const rooms = await prisma.room.findMany();
   res.json(rooms);
 });
 
-
+// CONFERENCE HALLS
 app.get("/api/conference", async (req, res) => {
   const halls = await prisma.conferenceHall.findMany();
   res.json(halls);
 });
 
-
+// SERVICES
 app.get("/api/services", async (req, res) => {
-  const services = await prisma.service.findMany();
+  const services = await prisma.otherService.findMany();
   res.json(services);
 });
 
+// BOOKINGS
 app.post("/api/bookings", async (req, res) => {
   const { userId, hallName, roomName, date, startHour, endHour } = req.body;
 
@@ -85,6 +85,7 @@ app.post("/api/bookings", async (req, res) => {
   }
 });
 
+
 app.get("/api/bookings/:userId", async (req, res) => {
   const { userId } = req.params;
 
@@ -96,7 +97,7 @@ app.get("/api/bookings/:userId", async (req, res) => {
   }
 });
 
-
 app.listen(PORT, () => {
   console.log(`Server running on http://localhost:${PORT}`);
 });
+

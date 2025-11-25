@@ -6,7 +6,8 @@ import Bookings from './pages/Bookings';
 import Conference from './pages/Conference';
 import Foods from './pages/Foods';
 import Otherservices from './pages/Otherservices';
-import { registerUser, loginUser, fetchRooms, fetchConference, fetchServices, createBooking } from './api';
+import { registerUser, loginUser, fetchRooms, fetchConference, fetchServices, createBooking } from "./api";
+
 
 
 export default function App() {
