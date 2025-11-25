@@ -6,9 +6,11 @@ import Bookings from './pages/Bookings';
 import Conference from './pages/Conference';
 import Foods from './pages/Foods';
 import Otherservices from './pages/Otherservices';
+import { registerUser, loginUser, fetchRooms, fetchConference, fetchServices, createBooking } from './api';
+
 
 export default function App() {
-  const [page, setPage] = useState('login'); // start with login page
+  const [page, setPage] = useState('login');
   const [user, setUser] = useState(JSON.parse(localStorage.getItem('faithResortUser')) || null);
   const [cart, setCart] = useState({});
   const [error, setError] = useState('');
@@ -52,7 +54,7 @@ export default function App() {
     setError('');
   };
 
-  // ---- Page routing ----
+ 
   if (page === "Rooms") return <Rooms setPage={setPage} />;
   if (page === "Cart") return <Cart setPage={setPage} cart={cart} setCart={setCart} />;
   if (page === "Bookings") return <Bookings setPage={setPage} />;
@@ -60,7 +62,6 @@ export default function App() {
   if (page === "Foods") return <Foods setPage={setPage} cart={cart} setCart={setCart} />;
   if (page === "Otherservices") return <Otherservices setPage={setPage} />;
 
-  // ---- Register page ----
   if (page === 'register') {
     return (
       <div className="page-background">
@@ -78,7 +79,7 @@ export default function App() {
     );
   }
 
-  // ---- Login page ----
+  
   if (page === 'login') {
     return (
       <div className="page-background">
@@ -96,11 +97,11 @@ export default function App() {
     );
   }
 
-  // ---- Dashboard page ----
+ 
   if (page === 'dashboard' && user) {
     return (
       <div className="dashboard-background">
-        {/* Top bar with cart icon */}
+       
         <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
           <span
             style={{
