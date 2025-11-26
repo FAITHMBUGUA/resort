@@ -18,10 +18,10 @@ app.use(cors());
 app.use(bodyParser.json());
 
 // -------- AUTH ROUTES --------
+const authRouter = express.Router();
 
-app.post("/api/register", async (req, res) => {
+authRouter.post("/register", async (req, res) => {
   const { name, email, password } = req.body;
-
   if (!name || !email || !password)
     return res.status(400).json({ error: "All fields are required" });
 
@@ -31,7 +31,7 @@ app.post("/api/register", async (req, res) => {
 
     const hashedPassword = await bcrypt.hash(password, 10);
     const user = await prisma.user.create({
-      data: { name, email, password: hashedPassword }
+      data: { name, email, password: hashedPassword },
     });
 
     res.json({ message: "User registered", userId: user.id });
@@ -41,9 +41,8 @@ app.post("/api/register", async (req, res) => {
   }
 });
 
-app.post("/api/login", async (req, res) => {
+authRouter.post("/login", async (req, res) => {
   const { email, password } = req.body;
-
   if (!email || !password)
     return res.status(400).json({ error: "Email and password required" });
 
@@ -62,8 +61,10 @@ app.post("/api/login", async (req, res) => {
   }
 });
 
-// -------- DATA ROUTES --------
+// Mount auth routes
+app.use("/api/auth", authRouter);
 
+// -------- DATA ROUTES --------
 app.get("/api/rooms", async (req, res) => {
   try {
     const rooms = await prisma.room.findMany();
@@ -92,13 +93,12 @@ app.get("/api/services", async (req, res) => {
 });
 
 // -------- BOOKINGS --------
-
 app.post("/api/bookings", async (req, res) => {
   const { userId, hallName, roomName, date, startHour, endHour } = req.body;
 
   try {
     const booking = await prisma.booking.create({
-      data: { userId, hallName, roomName, date: new Date(date), startHour, endHour }
+      data: { userId, hallName, roomName, date: new Date(date), startHour, endHour },
     });
     res.json(booking);
   } catch (err) {
@@ -106,7 +106,7 @@ app.post("/api/bookings", async (req, res) => {
   }
 });
 
-app.get("/api/bookings/:userId", async (req, res) => {
+app.get("/api/bookings/user/:userId", async (req, res) => {
   const { userId } = req.params;
 
   try {
@@ -118,7 +118,6 @@ app.get("/api/bookings/:userId", async (req, res) => {
 });
 
 // -------- START SERVER --------
-
 app.listen(PORT, () => {
   console.log(`Server running on http://localhost:${PORT}`);
 });

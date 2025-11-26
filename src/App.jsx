@@ -6,9 +6,14 @@ import Bookings from './pages/Bookings';
 import Conference from './pages/Conference';
 import Foods from './pages/Foods';
 import Otherservices from './pages/Otherservices';
-import { registerUser, loginUser, fetchRooms, fetchConference, fetchServices, createBooking } from "./api";
-
-
+import {
+  registerUser,
+  loginUser,
+  fetchRooms,
+  fetchConference,
+  fetchServices,
+  createBooking
+} from './Api';
 
 export default function App() {
   const [page, setPage] = useState('login');
@@ -16,7 +21,8 @@ export default function App() {
   const [cart, setCart] = useState({});
   const [error, setError] = useState('');
 
-  const handleRegister = (e) => {
+  // REGISTER
+  const handleRegister = async (e) => {
     e.preventDefault();
     const form = e.target.elements;
     const name = form.name.value;
@@ -28,34 +34,54 @@ export default function App() {
       return;
     }
 
-    const userObj = { name, email, password };
-    localStorage.setItem('faithResortUser', JSON.stringify(userObj));
-    alert('Registered! Please login.');
-    setPage('login');
+    try {
+      const res = await registerUser({ name, email, password });
+      if (res.data?.message) {
+        alert('Registered! Please login.');
+        setPage('login');
+      }
+    } catch (err) {
+      alert(err.response?.data?.error || 'Registration failed');
+    }
   };
 
-  const handleLogin = (e) => {
+  // LOGIN
+  const handleLogin = async (e) => {
     e.preventDefault();
     const form = e.target.elements;
     const email = form.email.value;
     const password = form.password.value;
 
-    const storedUser = JSON.parse(localStorage.getItem('faithResortUser'));
-    if (storedUser && storedUser.email === email && storedUser.password === password) {
-      setUser(storedUser);
+    if (!email || !password) {
+      setError('Fill all fields');
+      return;
+    }
+
+    try {
+      const res = await loginUser({ email, password });
+      const loggedInUser = {
+        name: res.data.name,
+        email: res.data.email,
+        token: res.data.token,
+      };
+      localStorage.setItem('faithResortUser', JSON.stringify(loggedInUser));
+      setUser(loggedInUser);
       setPage('dashboard');
-    } else {
-      setError('Invalid email or password');
+      setError('');
+    } catch (err) {
+      setError(err.response?.data?.error || 'Login failed');
     }
   };
 
+  // LOGOUT
   const handleLogout = () => {
-    setPage('login');
     setUser(null);
+    localStorage.removeItem('faithResortUser');
+    setPage('login');
     setError('');
   };
 
- 
+  // PAGE ROUTING
   if (page === "Rooms") return <Rooms setPage={setPage} />;
   if (page === "Cart") return <Cart setPage={setPage} cart={cart} setCart={setCart} />;
   if (page === "Bookings") return <Bookings setPage={setPage} />;
@@ -80,7 +106,6 @@ export default function App() {
     );
   }
 
-  
   if (page === 'login') {
     return (
       <div className="page-background">
@@ -98,19 +123,12 @@ export default function App() {
     );
   }
 
- 
   if (page === 'dashboard' && user) {
     return (
       <div className="dashboard-background">
-       
         <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
           <span
-            style={{
-              cursor: 'pointer',
-              fontSize: '24px',
-              color: 'blue',
-              margin: '10px',
-            }}
+            style={{ cursor: 'pointer', fontSize: '24px', color: 'blue', margin: '10px' }}
             onClick={() => setPage('Cart')}
             title="View Cart"
           >
